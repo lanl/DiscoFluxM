@@ -394,7 +394,7 @@ for (unsigned int i = 0; i < _number_slip_systems; ++i)
 	  }
   }
 
-
+// compute screw dislocation velocity.
 //Stress_internal.zero();
 for (unsigned int i = 0; i < _number_slip_systems; ++i)
 {	
