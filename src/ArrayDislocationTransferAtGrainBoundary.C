@@ -124,8 +124,8 @@ ArrayDislocationTransferAtGrainBoundary::computeInterfaceAdvCoeff()
 		}
 		velocity = _dislo_velocity_CP[_qp][i] * _slip_direction_rotated;
 	
-	_crt = 1.00 + (_density_critical - 1.00) * (GB_Transfer_Coeff[i][i] - 1.0)/(0.5 - 1.0); 
-	if((_u[_qp][i] > _crt) && std::abs(_tau[_qp][i])>_tau_critical) 
+	//_crt = 1.00 + (_density_critical - 1.00) * (GB_Transfer_Coeff[i][i] - 1.0)/(0.5 - 1.0); 
+	if((_u[_qp][i] > _density_critical) && std::abs(_tau[_qp][i])>_tau_critical) 
 	         _DD[i] = _scale_factor * velocity * _normals[_qp]; 
 	}
 

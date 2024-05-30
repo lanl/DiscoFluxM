@@ -188,8 +188,9 @@ for (unsigned int i_var = 0; i_var < _count; i_var++)
     {
       work_vector.setZero(_count);
       work_vector02.setZero(_count);
-      //prepareVectorTag(_assembly, _var.number());
-      // _local_re(_i) += _JxW[_qp] * _coord[_qp] * work_vector_res(1,n);
+      prepareVectorTag(_assembly, _var.number());
+      for (unsigned int i_var = 0; i_var < _count; i_var++)
+       _local_re(_i) += _JxW[_qp] * _coord[_qp] * work_vector_res(i_var,_i);
 
     }
   accumulateTaggedLocalResidual();
