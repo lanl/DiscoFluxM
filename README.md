@@ -18,9 +18,9 @@ This is a Dislocation Transport-based Crystal Plasticity Material Model(DiscoFlu
   (c) Nonlocal crystal plasticity with dislocation transport within the grain and across the grain boundary.
 
 # Sample results
-![Polycrystal Geometry](https://github.com/subhendu-LANL/DiscoFluxM/blob/devel/test/tests/SimulationResults/G18_Comp_Geometry_Stress_Strain.png?raw=true)
-![Polycrystal Geometry](https://github.com/subhendu-LANL/DiscoFluxM/blob/devel/test/tests/SimulationResults/G18_Comp_VMStress.png?raw=true)
-![Polycrystal Geometry](https://github.com/subhendu-LANL/DiscoFluxM/blob/devel/test/tests/SimulationResults/G18_Comp_GNDdensity.png?raw=true)
+![Polycrystal Geometry](https://github.com/lanl/DiscoFluxM/blob/master/test/tests/SimulationResults/G18_Comp_Geometry_Stress_Strain.png?raw=true)
+![Polycrystal Geometry](https://github.com/lanl/DiscoFluxM/blob/master/test/tests/SimulationResults/G18_Comp_VMStress.png?raw=true)
+![Polycrystal Geometry](https://github.com/lanl/DiscoFluxM/blob/master/test/tests/SimulationResults/G18_Comp_GNDdensity.png?raw=true)
 
 # Installation instruction
 1. Download/clone the modified version of moose from LANL-Gitlab.
