@@ -134,10 +134,10 @@ CrystalPlasticityDiscoflux::initQpStatefulProperties()
 	_slip_direction_screw[_qp][i].zero();
 	_slip_plane_normalboth[_qp][i].zero();
 
-    _slip_resistance[_qp][i] = 5*_lattice_friction; // approximate initial value
+    _slip_resistance[_qp][i] = _lattice_friction; // approximate initial value 5*_lattice_friction
     _slip_rate[_qp][i] = 0.0;
-	_dislocation_mobile[_qp][i] = 4 * _dislo_density_initial;
-	_dislocation_immobile[_qp][i] = 4.0 * _dislo_density_initial;
+	_dislocation_mobile[_qp][i] = _dislo_density_initial;
+	_dislocation_immobile[_qp][i] = _dislo_density_initial;
 	_dislo_velocity_edge[_qp][i] = 0.00;
 	_dislo_velocity_screw[_qp][i] = 0.00;
 	_kappa[_qp][i] = 0.0;
@@ -181,6 +181,14 @@ for (unsigned int i = 0; i < _number_slip_systems; ++i)
 	//_dislocation_mobile[_qp][i] = ((_DD_EdgePositive[_qp][i] + _DD_EdgeNegative[_qp][i]) * _dislo_velocity_edge[_qp][i]
   	//						 + (_DD_ScrewPositive[_qp][i] + _DD_ScrewNegative[_qp][i]) * _dislo_velocity_screw[_qp][i]) * _dislo_density_factor_CDT * _burgers_vector_mag;
 	_slip_rate[_qp][i] = _dislocation_mobile[_qp][i] * _burgers_vector_mag * _dislo_velocity_edge[_qp][i]; // For edge only
+	if (std::abs(_slip_rate[_qp][i]) * _substep_dt > _slip_incr_tol)
+    {
+      // if (_print_convergence_message)
+        mooseWarning("Maximum allowable slip increment exceeded ",
+                     std::abs(_slip_rate[_qp][i]) * _substep_dt);
+
+      return false;
+    }
   }
   for (unsigned int i = 0; i < _number_slip_systems; ++i)
   {
@@ -385,6 +393,8 @@ for (unsigned int i = 0; i < _number_slip_systems; ++i)
 		deltaG  = deltaG0*( std::pow(inner,_q2) );
 		exp_arg = deltaG / (boltz*_temp);
 		_dv_dtau[i] = 0.00; 
+		_dv_dtau[i] = - (_dislo_velocity_edge[_qp][i]/(t_wait[i] + t_run[i])) * ( t_run[i] * xi0[i] * vcrit / (vel_run[i] * tau_eff[i]) * ( xi0[i]/std::pow((xi0[i]*xi0[i]+1),0.5) - 1.0 ) -
+                              (t_wait[i] * _q1 * _q2 / slip_r[i]) * exp_arg * std::pow(inner,(_q2-1.0)) * std::pow((tau_effAbs[i] / slip_r[i] ),(_q1-1.0)) * tau_effSign[i] ); 
 	
 		}
 	else
@@ -472,7 +482,9 @@ for (unsigned int i = 0; i < _number_slip_systems; ++i)
 		inner = 1.0 - std::pow((tau_effAbs[i] / slip_r[i] ),_q1);
 		deltaG  = deltaG0*( std::pow(inner,_q2) );
 		exp_arg = deltaG / (boltz*_temp);
-		_dv_dtau[i] = 0.00; 
+		_dv_dtau[i] = 0.00;
+		_dv_dtau[i] = - (_dislo_velocity_screw[_qp][i]/(t_wait[i] + t_run[i])) * ( t_run[i] * xi0[i] * vcrit / (vel_run[i] * tau_eff[i]) * ( xi0[i]/std::pow((xi0[i]*xi0[i]+1),0.5) - 1.0 ) -
+                              (t_wait[i] * _q1 * _q2 / slip_r[i]) * exp_arg * std::pow(inner,(_q2-1.0)) * std::pow((tau_effAbs[i] / slip_r[i] ),(_q1-1.0)) * tau_effSign[i] ); 
 	
 		}
 	else
